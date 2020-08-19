@@ -30,12 +30,17 @@ def get_forecast(code):
                             'profitForcastChgPctUp': 'PctUp'})
 
     report = ''
+    forecast_date = ''
+    forecast_type = ''
+    forecast_rate = ''
     bs.logout()
     if not df.empty:
         latest = df.iloc[-1].values
         up = round(float(latest[3]), 2) if latest[3] else 0
-        report = f'{latest[1]}业绩预告:{latest[2]} (增长率: {up}% )'
-    return report
+        forecast_date = latest[1]
+        forecast_type = latest[2]
+        forecast_rate = up
+    return forecast_date, forecast_type, forecast_rate
 
 
 # 业绩快报
@@ -72,7 +77,9 @@ def get_express(code):
 
 
 def add_forecast(df):
-    df['forecast'] = df['symbol'].apply(lambda symbol: get_forecast(symbol))
+    df['forecast_date'] = df['symbol'].apply(lambda symbol: get_forecast(symbol)[0])
+    df['forecast_type'] = df['symbol'].apply(lambda symbol: get_forecast(symbol)[1])
+    df['forecast_rate'] = df['symbol'].apply(lambda symbol: get_forecast(symbol)[2])
     return df
 
 
