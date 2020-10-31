@@ -69,5 +69,4 @@ def calculate_gold_cross(type=1):
 
 
 if __name__ == '__main__':
-    # calculate_gold_cross()
     calculate_gold_cross(type=2)

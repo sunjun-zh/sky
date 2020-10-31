@@ -5,23 +5,21 @@ import requests
 import pandas as pd
 from conf.configs import Config
 
+
 # 北向资金
 def get_beixiang_stocks():
     cookies = {
         'cowCookie': 'true',
-        'st_si': '26368078327240',
-        'HAList': 'a-sh-601688-%u534E%u6CF0%u8BC1%u5238',
-        'em_hq_fls': 'js',
-        'waptgshowtime': '2020811',
-        'qgqp_b_id': 'a6fbb1ea3180f1eaa42bbcc80df61737',
-        'intellpositionL': '196px',
+        'qgqp_b_id': '57f05f971076eb5979659d53006119d6',
+        'st_si': '39080851249282',
         'st_asi': 'delete',
-        'st_pvi': '16329395883523',
-        'st_sp': '2020-08-11%2008%3A27%3A04',
-        'st_inirUrl': 'http%3A%2F%2Fdata.eastmoney.com%2Fdzjy%2Fdefault.html',
-        'st_sn': '49',
-        'st_psi': '20200811130759732-113300303605-4320939707',
-        'intellpositionT': '581px',
+        'intellpositionL': '901.594px',
+        'intellpositionT': '1447px',
+        'st_pvi': '82690235654609',
+        'st_sp': '2020-10-18%2009%3A12%3A15',
+        'st_inirUrl': '',
+        'st_sn': '27',
+        'st_psi': '20201018093430828-113300303605-3618098728',
     }
 
     headers = {
@@ -42,7 +40,7 @@ def get_beixiang_stocks():
         ('p', '1'),
         ('ps', '50'),
         ('js', 'var oHwBgGmr=/{pages:(tp),data:(x)/}'),
-        ('filter', '(DateType=\'1\' and HdDate=\'2020-08-10\')'),
+        ('filter', '(DateType=\'1\' and HdDate=\'2020-10-16\')'),
         ('rt', '53237416'),
     )
 
@@ -54,7 +52,7 @@ def get_beixiang_stocks():
 
     while pageIndex <= pages:
         print('页面:', pageIndex)
-        url = f"http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=HSGT20_GGTJ_SUM&token=894050c76af8597a853f5b408b759f5d&st=ShareSZ_Chg_One&sr=-1&p={pageIndex}&ps={pageSize}&js=var%20oHwBgGmr={{pages:(tp),data:(x)}}&filter=(DateType=%271%27%20and%20HdDate=%27{date}%27)&rt=53237416"
+        url = f"http://dcfm.eastmoney.com/EM_MutiSvcExpandInterface/api/js/get?type=HSGT20_GGTJ_SUM&token=894050c76af8597a853f5b408b759f5d&st=ShareSZ&sr=-1&p={pageIndex}&ps={pageSize}&js=var%20YDyWHbAx={{pages:(tp),data:(x)}}&filter=(DateType=%271%27%20and%20HdDate=%272020-10-16%27)&rt=53432824"
         response = requests.get(url=url,
                                 headers=headers,
                                 cookies=cookies,

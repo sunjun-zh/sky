@@ -39,13 +39,11 @@ def calculating_growth_rate(code='sz.000001'):
 
 
 def add_rps(df=None):
-    df['growth_50'] = df['code'].apply(lambda code: calculating_growth_rate(code)[0])
-    df['growth_120'] = df['code'].apply(lambda code: calculating_growth_rate(code)[1])
-    df['growth_250'] = df['code'].apply(lambda code: calculating_growth_rate(code)[2])
-    df['latest_date'] = df['code'].apply(lambda code: calculating_growth_rate(code)[3])
-    df['latest_price'] = df['code'].apply(lambda code: calculating_growth_rate(code)[4])
-    df['symbol'] = df['code']
-    df['code'] = df['code'].apply(lambda x: x.split('.')[-1])
+    df['growth_50'] = df['symbol'].apply(lambda code: calculating_growth_rate(code)[0])
+    df['growth_120'] = df['symbol'].apply(lambda code: calculating_growth_rate(code)[1])
+    df['growth_250'] = df['symbol'].apply(lambda code: calculating_growth_rate(code)[2])
+    df['latest_date'] = df['symbol'].apply(lambda code: calculating_growth_rate(code)[3])
+    df['latest_price'] = df['symbol'].apply(lambda code: calculating_growth_rate(code)[4])
     # df.to_pickle('growth.pkl')
     # df = pd.read_pickle('growth.pkl')
     x = df.shape[0]  # 行数
@@ -57,7 +55,8 @@ def add_rps(df=None):
     df = df.reset_index(level=0)
     df['rps_50'] = (1 - df['level_0'] / x) * 100
     df = df[
-        ['symbol', 'code', 'code_name', 'growth_120', 'growth_250', 'rps_50', 'ipoDate', 'latest_date', 'latest_price']]
+        ['symbol', 'code', 'name', 'growth_120', 'growth_250', 'rps_50', 'rate', 'share', 'latest_date',
+         'latest_price']]
 
     df = df.sort_values(by='growth_120', ascending=False, axis=0)  # 升序
     df = df.reset_index()
@@ -66,7 +65,8 @@ def add_rps(df=None):
 
     df['rps_120'] = (1 - df['level_0'] / x) * 100
     df = df[
-        ['symbol', 'code', 'code_name', 'growth_250', 'rps_50', 'rps_120', 'ipoDate', 'latest_date', 'latest_price']]
+        ['symbol', 'code', 'name', 'growth_250', 'rps_50', 'rps_120', 'rate', 'share', 'latest_date',
+         'latest_price']]
 
     # 设置level_1 --> growth_50
     df = df.sort_values(by='growth_250', ascending=False, axis=0)  # 升序
@@ -74,9 +74,9 @@ def add_rps(df=None):
     df.index = df.index + 1
     df = df.reset_index()
     df['rps_250'] = (1 - df['level_0'] / x) * 100
-    df = df[['symbol', 'code', 'code_name', 'rps_50', 'rps_120', 'rps_250', 'ipoDate', 'latest_date', 'latest_price']]
+    final_df = df[
+        ['symbol', 'code', 'name', 'rps_50', 'rps_120', 'rps_250', 'rate', 'share', 'latest_date', 'latest_price']]
 
-    final_df = df.rename(columns={'code_name': 'name', 'ipoDate': 'date'})
     return final_df
 
 
