@@ -2,6 +2,8 @@
 from datetime import datetime
 import json
 
+import pandas as pd
+
 from macd.parse import Macd
 from strategies.stocks import query_sz50_stocks, query_hs300_stocks, query_zz500_stocks, get_all_stock
 
@@ -53,14 +55,23 @@ def calculate_gold_cross(type=1):
     elif type == 3:
         category = '中证500成分股'
         codes = query_zz500_stocks()[['code', 'code_name']].values.tolist()
+    elif type==4:
+        category = '上市一你以上'
+        df = pd.read_pickle('one_more.pkl')
+        codes = []
+        for stock in df.to_dict('records'):
+            code = stock['symbol']
+            code_name = stock['name']
+            codes.append([code, code_name])
     else:
         category = '所有股票'
         codes = get_all_stock()[['code', 'code_name']].values.tolist()
 
+
     res = []
     for code, code_name in codes:
         print('-' * 20)
-        print('现在正在处理:', code_name)
+        print('现在正在处理:', code, code_name)
         if _calculate(code):
             res.append({'code': code, 'name': code_name, 'category': category})
 
@@ -69,4 +80,4 @@ def calculate_gold_cross(type=1):
 
 
 if __name__ == '__main__':
-    calculate_gold_cross(type=2)
+    calculate_gold_cross(type=4)

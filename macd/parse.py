@@ -86,11 +86,32 @@ class Macd:
             data_list.append(rs.get_row_data())
         monthly = pd.DataFrame(data_list, columns=rs.fields)
 
+        num = int(monthly.shape[0])
+        if 36 > num:
+            _n = 36 - num
+            monthly = _concat(monthly, _n, code)
+
         bs.logout()
         d_df = Macd.calculate_macd(monthly)
         return d_df.tail(7)
 
 
+def _concat(monthly, _n, code):
+    l = monthly[0:1]['close'].tolist()
+    avg = sum(map(float, l)) / len(l)
+
+    date = pd.date_range('2017-10-31', periods=_n, freq='M').tolist()
+
+    df = pd.DataFrame()
+    df['date'] = date
+    df['code'] = code
+    df['open'] = 0
+    df['low'] = 0
+    df['close'] = avg
+
+    return pd.concat([df, monthly], ignore_index=True, sort=True)
+
+
 if __name__ == '__main__':
-    df = Macd.get_monthly_data('sh.600760')
+    df = Macd.get_monthly_data('sz.300795')
     print(df)
